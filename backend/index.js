@@ -3,8 +3,9 @@ import dotenv from "dotenv";
 import { mongoConnection } from "./config/db.js";
 import userRouter from "./Routes/users.js";
 import authRouter from "./Routes/auth.js";
-import hotelsRouter from "./Routes/rooms.js";
-import roomsRouter from "./Routes/hotels.js";
+import roomsRouter from "./Routes/rooms.js";
+import hotelsRouter from "./Routes/hotels.js";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 const app = express();
@@ -12,15 +13,17 @@ const PORT = process.env.PORT || 8080;
 
 mongoConnection();
 
+app.use(cookieParser());
+app.use(express.json());
+
 //Middlewares
 
 //ROUTES
-app.post("/users",userRouter)
-app.post("/auth",authRouter)
-app.post("/hotels",hotelsRouter)
-app.post("/rooms",roomsRouter)
+app.use("/users", userRouter);
+app.use("/auth", authRouter);
+app.use("/hotels", hotelsRouter);
+app.use("/rooms", roomsRouter);
 
 app.listen(PORT, () => {
-
   console.log(`App running on PORT ${PORT} `);
 });
